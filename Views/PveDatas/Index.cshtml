@@ -1,0 +1,321 @@
+﻿@model PaginatedList<PVE.Models.PveData>
+
+@{
+    ViewData["Title"] = "所有数据";
+}
+
+<h1>所有数据</h1>
+
+<div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                控制面板
+            </div>
+            <div class="card-body">
+                <p>
+                    <a asp-action="Create" class="btn btn-danger">新增</a>
+                </p>
+
+                <form asp-controller="PveDatas" asp-action="Index" method="get">
+                    <p>
+                        <div class="input-group">
+                            <input type="text" placeholder="请输入序号" name="filter" value="@ViewData["CurrentFilter"]">
+                            <div class="input-group-append">
+                                <input type="submit" value="筛选" class="btn btn-primary "/>
+                            </div>
+                            <a asp-action="Index" type="button" class="btn btn-link">清空筛选</a>
+                        </div>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
+
+<div class="table-responsive ">
+
+    <table class="table table-hover table-striped text-nowrap"
+           id="table">
+
+        <thead class="table-bordered">
+            <tr>
+                <th rowspan="2">#</th>
+                <th rowspan="2">
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">序号</a>
+                </th>
+                <th rowspan="2">
+                    @Html.DisplayNameFor(model => model.Model.Producer)
+                </th>
+                <th colspan="6">
+                    车型信息
+                </th>
+                <th rowspan="2">
+                    @Html.DisplayNameFor(model => model.Model.TestContent)
+                </th>
+                <th colspan="7">
+                    测试进度
+                </th>
+                <th colspan="7">
+                    商务信息
+                </th>
+                <th colspan="7">
+                    费用结算
+                </th>
+                <th colspan="2">
+                    项目状态
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.VehicleType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.OBD)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.BOB)
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">
+                        @Html.DisplayNameFor(model => model.Model.ReleaseDate)
+                    </a>
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.VehicleNum)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.VIN)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.ProgressJ1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.ProgressJ2D)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.ProgressJ2Z)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.ProgressJ2W)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.ProgressJ2H)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.ProgressJ2S)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.ProgressJ3)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.ContactCustomer)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.ContactMarket)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.ContactCATAC)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.Period)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.ContractType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.Agreement)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.ProjectBid)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.FeeJ1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.FeeJ2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.FeeJ3)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.TaskForm)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.ReportDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.ReturnDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.FeeStatus)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.ProjectStatus)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Model.Remark)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @if ((await AuthorizationService.AuthorizeAsync(
+                          User, item,
+                          PveDataOperations.Update)).Succeeded)
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
+                            <text> | </text>
+                        }
+                        <a asp-action="Details" asp-route-id="@item.ID">Details</a>
+                        @if ((await AuthorizationService.AuthorizeAsync(
+                          User, item,
+                          PveDataOperations.Delete)).Succeeded)
+                        {
+                            <text> | </text>
+                            <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                        }
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SerialNum)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Producer)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VehicleType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OBD)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BOB)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReleaseDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VehicleNum)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VIN)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TestContent)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProgressJ1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProgressJ2D)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProgressJ2Z)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProgressJ2W)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProgressJ2H)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProgressJ2S)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProgressJ3)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ContactCustomer)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ContactMarket)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ContactCATAC)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Period)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ContractType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Agreement)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProjectBid)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FeeJ1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FeeJ2)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FeeJ3)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TaskForm)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReportDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReturnDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FeeStatus)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProjectStatus)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Remark)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    }
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="1"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-outline-primary @prevDisabled" data-toggle="tooltip" data-placement="bottom" title="第一页">
+        <<
+    </a>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn btn-outline-primary @prevDisabled"data-toggle="tooltip" data-placement="bottom" title="上一页">
+        <
+    </a>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn  btn-outline-primary @nextDisabled"data-toggle="tooltip" data-placement="bottom" title="下一页">
+        >
+    </a>
+    <a asp-action="Index"
+       asp-route-sortOrder="@ViewData["CurrentSort"]"
+       asp-route-pageNumber="@(Model.LastPageIndex)"
+       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+       class="btn  btn-outline-primary @nextDisabled"data-toggle="tooltip" data-placement="bottom" title="最后一页">
+        >>
+    </a>
+</div>
+

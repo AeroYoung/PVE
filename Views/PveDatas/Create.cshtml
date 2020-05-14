@@ -1,0 +1,281 @@
+﻿@model PVE.Models.PveData
+
+@{
+    ViewData["Title"] = "新增";
+}
+
+<h1>新增数据</h1>
+
+<p>
+    <a asp-action="Index">Back to List</a>
+</p>
+
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <input type="submit" value="确认" class="btn btn-danger btn-lg" />
+    </div>
+    
+    <div class="accordion" id="accordionExample">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#basic-info" aria-expanded="true" aria-controls="collapseOne">
+                        基础信息
+                    </button>
+                </h2>
+            </div>
+
+            <div id="basic-info" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label asp-for="SerialNum" class="control-label"></label>
+                            <input asp-for="SerialNum" class="form-control" />
+                            <span asp-validation-for="SerialNum" class="text-danger"></span>
+                        </div>
+                        <div class="form-group  col-md-4">
+                            <label asp-for="Producer" class="control-label"></label>
+                            <input asp-for="Producer" class="form-control" />
+                            <span asp-validation-for="Producer" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-8">
+                            <label asp-for="TestContent" class="control-label"></label>
+                            <input asp-for="TestContent" class="form-control" />
+                            <span asp-validation-for="TestContent" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h2 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        车型信息
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label asp-for="VehicleType" class="control-label"></label>
+                            <input asp-for="VehicleType" class="form-control" />
+                            <span asp-validation-for="VehicleType" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="OBD" class="control-label"></label>
+                            <input asp-for="OBD" class="form-control" />
+                            <span asp-validation-for="OBD" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="BOB" class="control-label"></label>
+                            <input asp-for="BOB" class="form-control" />
+                            <span asp-validation-for="BOB" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="ReleaseDate" class="control-label"></label>
+                            <input asp-for="ReleaseDate" class="form-control" />
+                            <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="VehicleNum" class="control-label"></label>
+                            <input asp-for="VehicleNum" class="form-control" />
+                            <span asp-validation-for="VehicleNum" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="VIN" class="control-label"></label>
+                            <input asp-for="VIN" class="form-control" />
+                            <span asp-validation-for="VIN" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="headingThree">
+                <h2 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        测试进度
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label asp-for="ProgressJ1" class="control-label"></label>
+                            <input asp-for="ProgressJ1" class="form-control" />
+                            <span asp-validation-for="ProgressJ1" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="ProgressJ2D" class="control-label"></label>
+                            <input asp-for="ProgressJ2D" class="form-control" />
+                            <span asp-validation-for="ProgressJ2D" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="ProgressJ2Z" class="control-label"></label>
+                            <input asp-for="ProgressJ2Z" class="form-control" />
+                            <span asp-validation-for="ProgressJ2Z" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="ProgressJ2W" class="control-label"></label>
+                            <input asp-for="ProgressJ2W" class="form-control" />
+                            <span asp-validation-for="ProgressJ2W" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="ProgressJ2H" class="control-label"></label>
+                            <input asp-for="ProgressJ2H" class="form-control" />
+                            <span asp-validation-for="ProgressJ2H" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="ProgressJ2S" class="control-label"></label>
+                            <input asp-for="ProgressJ2S" class="form-control" />
+                            <span asp-validation-for="ProgressJ2S" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="ProgressJ3" class="control-label"></label>
+                            <input asp-for="ProgressJ3" class="form-control" />
+                            <span asp-validation-for="ProgressJ3" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="heading4">
+                <h2 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapseThree">
+                        商务信息
+                    </button>
+                </h2>
+            </div>
+            <div id="collapse4" class="collapse" aria-labelledby="heading4" data-parent="#accordionExample">
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label asp-for="ContactCustomer" class="control-label"></label>
+                            <input asp-for="ContactCustomer" class="form-control" />
+                            <span asp-validation-for="ContactCustomer" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="ContactMarket" class="control-label"></label>
+                            <input asp-for="ContactMarket" class="form-control" />
+                            <span asp-validation-for="ContactMarket" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="ContactCATAC" class="control-label"></label>
+                            <input asp-for="ContactCATAC" class="form-control" />
+                            <span asp-validation-for="ContactCATAC" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Period" class="control-label"></label>
+                            <input asp-for="Period" class="form-control" />
+                            <span asp-validation-for="Period" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="ContractType" class="control-label"></label>
+                            <input asp-for="ContractType" class="form-control" />
+                            <span asp-validation-for="ContractType" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Agreement" class="control-label"></label>
+                            <input asp-for="Agreement" class="form-control" />
+                            <span asp-validation-for="Agreement" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="ProjectBid" class="control-label"></label>
+                            <input asp-for="ProjectBid" class="form-control" />
+                            <span asp-validation-for="ProjectBid" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="heading5">
+                <h2 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse5" aria-expanded="false" aria-controls="collapseThree">
+                        费用结算
+                    </button>
+                </h2>
+            </div>
+            <div id="collapse5" class="collapse" aria-labelledby="heading5" data-parent="#accordionExample">
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label asp-for="FeeJ1" class="control-label"></label>
+                            <input asp-for="FeeJ1" class="form-control" />
+                            <span asp-validation-for="FeeJ1" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="FeeJ2" class="control-label"></label>
+                            <input asp-for="FeeJ2" class="form-control" />
+                            <span asp-validation-for="FeeJ2" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="FeeJ3" class="control-label"></label>
+                            <input asp-for="FeeJ3" class="form-control" />
+                            <span asp-validation-for="FeeJ3" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="TaskForm" class="control-label"></label>
+                            <input asp-for="TaskForm" class="form-control" />
+                            <span asp-validation-for="TaskForm" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="ReportDate" class="control-label"></label>
+                            <input asp-for="ReportDate" class="form-control" />
+                            <span asp-validation-for="ReportDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="ReturnDate" class="control-label"></label>
+                            <input asp-for="ReturnDate" class="form-control" />
+                            <span asp-validation-for="ReturnDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="FeeStatus" class="control-label"></label>
+                            <input asp-for="FeeStatus" class="form-control" />
+                            <span asp-validation-for="FeeStatus" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="heading6">
+                <h2 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse6" aria-expanded="false" aria-controls="collapseThree">
+                        项目状态
+                    </button>
+                </h2>
+            </div>
+            <div id="collapse6" class="collapse" aria-labelledby="heading6" data-parent="#accordionExample">
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label asp-for="ProjectStatus" class="control-label"></label>
+                            <input asp-for="ProjectStatus" class="form-control" />
+                            <span asp-validation-for="ProjectStatus" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label asp-for="Remark" class="control-label"></label>
+                            <input asp-for="Remark" class="form-control" />
+                            <span asp-validation-for="Remark" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</form>
+
