@@ -163,4 +163,5 @@ $RECYCLE.BIN/
 
 .svn
 .svn/
+.vs/
 *.nupkg
