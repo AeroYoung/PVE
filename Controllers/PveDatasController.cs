@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +17,8 @@ namespace PVE.Controllers
             _context = context;
         }
 
+        #region Index
+
         [AllowAnonymous]
         public async Task<IActionResult> Index(
             string sortOrder,
@@ -26,6 +27,8 @@ namespace PVE.Controllers
             int pageNumber = 1,
             int pageSize = 50)
         {
+            #region 分页|筛选|排序
+
             /*
              * 名为 currentFilter 的 ViewData 元素为视图提供当前筛选器字符串。
              * 此值必须包含在分页链接中，以便在分页过程中保持筛选器设置，并且在页面重新显示时必须将其还原到文本框中。
@@ -49,7 +52,7 @@ namespace PVE.Controllers
 
             if (!string.IsNullOrEmpty(filter))
             {
-                datas = datas.Where(s => s.SerialNum.Contains(filter));
+                datas = datas.Where(s => s.VIN.Contains(filter));
             }
 
             switch (sortOrder)
@@ -67,8 +70,13 @@ namespace PVE.Controllers
                     datas = datas.OrderBy(s => s.SerialNum);
                     break;
             }
-            return View(await PaginatedList<PveData>.CreateAsync(datas.AsNoTracking(), pageNumber, pageSize));
+
+            #endregion
+
+            return View(await PaginatedList<PveData>.CreateAsync(datas, pageNumber, pageSize));
         }
+
+        #endregion
 
         // GET: PveDatas/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -106,13 +114,10 @@ namespace PVE.Controllers
             // 绑定字段防止过度发布
             [Bind("ID,SerialNum,Producer,VehicleType,OBD,BOB,ReleaseDate,VehicleNum,VIN,TestContent,ProgressJ1,ProgressJ2D,ProgressJ2Z,ProgressJ2W,ProgressJ2H,ProgressJ2S,ProgressJ3,ContactCustomer,ContactMarket,ContactCATAC,Period,ContractType,Agreement,ProjectBid,FeeJ1,FeeJ2,FeeJ3,TaskForm,ReportDate,ReturnDate,FeeStatus,ProjectStatus,Remark")] PveData pveData)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(pveData);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(pveData);
+            if (!ModelState.IsValid) return View(pveData);
+            _context.Add(pveData);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         #endregion

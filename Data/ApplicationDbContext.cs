@@ -13,6 +13,5 @@ namespace PVE.Data
             : base(options)
         {
         }
-        public DbSet<PVE.Models.PveData> PveData { get; set; }
     }
 }

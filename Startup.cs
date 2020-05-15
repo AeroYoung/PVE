@@ -79,8 +79,8 @@ namespace PVE
 
             #endregion
 
-            services.AddSingleton<IAuthorizationHandler,
-                AdministratorsAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationHandler, AdminAuthHandler>();
+            services.AddSingleton<IAuthorizationHandler, SignalAdminAuthHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

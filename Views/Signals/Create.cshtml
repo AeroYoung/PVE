@@ -1,0 +1,61 @@
+﻿@model PVE.Models.Signal
+
+@{
+    ViewData["Title"] = "新增";
+}
+
+<h1>新增</h1>
+
+<h4>输入输出信号</h4>
+<h4>@ViewData[Constants.ViewDataVIN]</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" asp-route-vin="@ViewData[Constants.ViewDataVIN]">
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="PveDataID"></label>
+                <input asp-for="PveDataID" value="@ViewData[Constants.ViewDataPveDataId]" class="form-control" readonly/>
+                <span asp-validation-for="PveDataID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PinNo" class="control-label"></label>
+                <input asp-for="PinNo" class="form-control" />
+                <span asp-validation-for="PinNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PinName" class="control-label"></label>
+                <input asp-for="PinName" class="form-control" />
+                <span asp-validation-for="PinName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Func1" class="control-label"></label>
+                <input asp-for="Func1" class="form-control" />
+                <span asp-validation-for="Func1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Func2" class="control-label"></label>
+                <input asp-for="Func2" class="form-control" />
+                <span asp-validation-for="Func2" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="OBD" /> @Html.DisplayNameFor(model => model.OBD)
+                </label>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

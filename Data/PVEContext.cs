@@ -14,6 +14,15 @@ namespace PVE.Data
         {
         }
 
-        public DbSet<PVE.Models.PveData> PveData { get; set; }
+        public DbSet<PveData> PveData { get; set; }
+
+        public DbSet<Signal> Signal { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<PveData>()
+                .HasIndex(u => u.VIN)
+                .IsUnique();
+        }
     }
 }

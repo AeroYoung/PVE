@@ -1,0 +1,54 @@
+﻿@model PVE.Models.Signal
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Signal</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="PinNo" class="control-label"></label>
+                <input asp-for="PinNo" class="form-control" />
+                <span asp-validation-for="PinNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PinName" class="control-label"></label>
+                <input asp-for="PinName" class="form-control" />
+                <span asp-validation-for="PinName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Func1" class="control-label"></label>
+                <input asp-for="Func1" class="form-control" />
+                <span asp-validation-for="Func1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Func2" class="control-label"></label>
+                <input asp-for="Func2" class="form-control" />
+                <span asp-validation-for="Func2" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="OBD" /> @Html.DisplayNameFor(model => model.OBD)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

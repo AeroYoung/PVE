@@ -22,9 +22,9 @@
                 <form asp-controller="PveDatas" asp-action="Index" method="get">
                     <p>
                         <div class="input-group">
-                            <input type="text" placeholder="请输入序号" name="filter" value="@ViewData["CurrentFilter"]">
+                            <input type="text" placeholder="请输入VIN" name="filter" value="@ViewData["CurrentFilter"]">
                             <div class="input-group-append">
-                                <input type="submit" value="筛选" class="btn btn-primary "/>
+                                <input type="submit" value="筛选" class="btn btn-primary " />
                             </div>
                             <a asp-action="Index" type="button" class="btn btn-link">清空筛选</a>
                         </div>
@@ -38,22 +38,16 @@
 <div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
 
 <div class="table-responsive ">
-
-    <table class="table table-hover table-striped text-nowrap"
-           id="table">
-
+    <table class="table table-hover table-striped text-nowrap">
         <thead class="table-bordered">
             <tr>
                 <th rowspan="2">#</th>
                 <th rowspan="2">
                     <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">序号</a>
                 </th>
-                <th rowspan="2">
-                    @Html.DisplayNameFor(model => model.Model.Producer)
-                </th>
-                <th colspan="6">
-                    车型信息
-                </th>
+                <th rowspan="2"> @Html.DisplayNameFor(model => model.Model.Producer)</th>
+                <th rowspan="2">关联数据</th>
+                <th colspan="6">车型信息</th>
                 <th rowspan="2">
                     @Html.DisplayNameFor(model => model.Model.TestContent)
                 </th>
@@ -168,27 +162,34 @@
                 <tr>
                     <td>
                         @if ((await AuthorizationService.AuthorizeAsync(
-                          User, item,
-                          PveDataOperations.Update)).Succeeded)
+                     User, item,
+                     PveDataOperations.Update)).Succeeded)
                         {
-                            <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
                             <text> | </text>
+                            <a asp-action="Edit" asp-route-id="@item.ID">编辑</a>
                         }
-                        <a asp-action="Details" asp-route-id="@item.ID">Details</a>
+
                         @if ((await AuthorizationService.AuthorizeAsync(
-                          User, item,
-                          PveDataOperations.Delete)).Succeeded)
+                     User, item,
+                     PveDataOperations.Delete)).Succeeded)
                         {
                             <text> | </text>
-                            <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                            <a asp-action="Delete" asp-route-id="@item.ID">删除</a>
                         }
 
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.SerialNum)
+                        <a asp-action="Details" asp-route-id="@item.ID" target="_blank">
+                            @Html.DisplayFor(modelItem => item.SerialNum)
+                        </a>
                     </td>
+                    <td>@Html.DisplayFor(modelItem => item.Producer)</td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Producer)
+                        <a asp-controller="Signals" asp-action="Index" target="_blank"
+                           asp-route-foreignKey="@item.ID" 
+                           asp-route-vin="@item.VIN">
+                            信号
+                        </a>
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.VehicleType)
@@ -284,38 +285,57 @@
             }
         </tbody>
     </table>
+</div>
 
-    @{
-        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-    }
-    <a asp-action="Index"
-       asp-route-sortOrder="@ViewData["CurrentSort"]"
-       asp-route-pageNumber="1"
-       asp-route-currentFilter="@ViewData["CurrentFilter"]"
-       class="btn btn-outline-primary @prevDisabled" data-toggle="tooltip" data-placement="bottom" title="第一页">
-        <<
-    </a>
-    <a asp-action="Index"
-       asp-route-sortOrder="@ViewData["CurrentSort"]"
-       asp-route-pageNumber="@(Model.PageIndex - 1)"
-       asp-route-currentFilter="@ViewData["CurrentFilter"]"
-       class="btn btn-outline-primary @prevDisabled"data-toggle="tooltip" data-placement="bottom" title="上一页">
-        <
-    </a>
-    <a asp-action="Index"
-       asp-route-sortOrder="@ViewData["CurrentSort"]"
-       asp-route-pageNumber="@(Model.PageIndex + 1)"
-       asp-route-currentFilter="@ViewData["CurrentFilter"]"
-       class="btn  btn-outline-primary @nextDisabled"data-toggle="tooltip" data-placement="bottom" title="下一页">
-        >
-    </a>
-    <a asp-action="Index"
-       asp-route-sortOrder="@ViewData["CurrentSort"]"
-       asp-route-pageNumber="@(Model.LastPageIndex)"
-       asp-route-currentFilter="@ViewData["CurrentFilter"]"
-       class="btn  btn-outline-primary @nextDisabled"data-toggle="tooltip" data-placement="bottom" title="最后一页">
-        >>
-    </a>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<div class="clearfix" style="margin-bottom: 6px;"></div><!-- 清除浮动 -->
+
+<div class="row">
+    <div class="col-md-4">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item  @prevDisabled">
+                    <a asp-action="Index"
+                       asp-route-sortOrder="@ViewData["CurrentSort"]"
+                       asp-route-pageNumber=1
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                       class="page-link">
+                        第一页
+                    </a>
+                </li>
+                <li class="page-item @prevDisabled">
+                    <a asp-action="Index"
+                       asp-route-sortOrder="@ViewData["CurrentSort"]"
+                       asp-route-pageNumber="@(Model.PageIndex - 1)"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                       class="page-link">
+                        上一页
+                    </a>
+                </li>
+                <li class="page-item @nextDisabled">
+                    <a asp-action="Index"
+                       asp-route-sortOrder="@ViewData["CurrentSort"]"
+                       asp-route-pageNumber="@(Model.PageIndex + 1)"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                       class="page-link">
+                        下一页
+                    </a>
+                </li>
+                <li class="page-item @nextDisabled">
+                    <a asp-action="Index"
+                       asp-route-sortOrder="@ViewData["CurrentSort"]"
+                       asp-route-pageNumber="@(Model.LastPageIndex)"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                       class="page-link">
+                        最后
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </div>
 

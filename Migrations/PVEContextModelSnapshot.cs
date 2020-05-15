@@ -115,7 +115,8 @@ namespace PVE.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("VIN")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("VehicleNum")
                         .HasColumnType("int");
@@ -125,7 +126,52 @@ namespace PVE.Migrations
 
                     b.HasKey("ID");
 
+                    b.HasIndex("VIN")
+                        .IsUnique();
+
                     b.ToTable("PveData");
+                });
+
+            modelBuilder.Entity("PVE.Models.Signal", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Func1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Func2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("OBD")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PinName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PinNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PveDataID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("PveDataID");
+
+                    b.ToTable("Signal");
+                });
+
+            modelBuilder.Entity("PVE.Models.Signal", b =>
+                {
+                    b.HasOne("PVE.Models.PveData", "PveData")
+                        .WithMany("Signals")
+                        .HasForeignKey("PveDataID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
