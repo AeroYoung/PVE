@@ -31,6 +31,7 @@ namespace PVE.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PveDataID")
@@ -54,6 +55,7 @@ namespace PVE.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("GroupName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PveDataID")

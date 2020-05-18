@@ -19,6 +19,7 @@ namespace PVE.Models
         public PveData PveData { get; set; }
 
         [DisplayName("系族名称")]
+        [Required]
         public string GroupName { get; set; }
 
         [DisplayName("测试组")]

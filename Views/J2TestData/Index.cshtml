@@ -1,71 +1,105 @@
 ﻿@model IEnumerable<PVE.Models.J2TestData>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "J2测试清单";
 }
 
-<h1>Index</h1>
+<h1>J2测试清单</h1>
+<div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.PveData)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GroupName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TestGroup)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ActualTestDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SoftVersion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SABVersion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Remark)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.PveData.SerialNum)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GroupName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TestGroup)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ActualTestDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SoftVersion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SABVersion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Remark)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">VIN:{@ViewData[Constants.ViewDataVIN]}</div>
+            <div class="card-body">
+                <p>
+                    <a asp-action="Create" asp-route-foreignKey="@ViewData[Constants.ViewDataPveDataId]"
+                       class="btn btn-warning">新增</a>
+                </p>
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.GroupName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.TestGroup)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PveData.VehicleType)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PveData.VIN)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ActualTestDate)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.SoftVersion)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.SABVersion)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Remark)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                            <tr>
+                                <td>
+                                    @if ((await AuthorizationService.AuthorizeAsync(
+                                      User, item, PveDataOperations.Update)).Succeeded)
+                                    {
+                                        <a asp-action="Edit" asp-route-id="@item.ID"
+                                           asp-route-foreignKey="@ViewData[Constants.ViewDataPveDataId]">
+                                            编辑
+                                        </a>
+                                        <text> | </text>
+                                        <a asp-action="Delete" asp-route-id="@item.ID"
+                                           asp-route-foreignKey="@ViewData[Constants.ViewDataPveDataId]">删除</a>
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.ID"
+                                       asp-route-foreignKey="@ViewData[Constants.ViewDataPveDataId]"
+                                       target="_blank">@Html.DisplayFor(modelItem => item.GroupName)</a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TestGroup)
+                                </td>
+                                <td>@Html.DisplayFor(modelItem => item.PveData.VehicleType)</td>
+                                <td>
+                                    <a asp-controller="PveDatas" asp-action="Details" asp-route-id="@item.ID"
+                                       asp-route-foreignKey="@ViewData[Constants.ViewDataPveDataId]"
+                                       target="_blank">@Html.DisplayFor(modelItem => item.PveData.VIN)</a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ActualTestDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SoftVersion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SABVersion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Remark)
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PVE.Models
 {
@@ -46,6 +47,7 @@ namespace PVE.Models
         [Category("车型信息")]
         [DisplayName("VIN")]
         [Required]
+        [Remote("ValidateVIN", "PveDatas", AdditionalFields = "ID")]
         public string VIN { get; set; }
 
         #endregion

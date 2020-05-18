@@ -109,9 +109,11 @@ namespace PVE.Controllers
         [Authorize(Roles = Constants.AdministratorRole)]
         public async Task<IActionResult> Create(
             // 绑定字段防止过度发布
-            [Bind("ID,SerialNum,Producer,VehicleType,OBD,BOB,ReleaseDate,VehicleNum,VIN,TestContent,ProgressJ1,ProgressJ2D,ProgressJ2Z,ProgressJ2W,ProgressJ2H,ProgressJ2S,ProgressJ3,ContactCustomer,ContactMarket,ContactCATAC,Period,ContractType,Agreement,ProjectBid,FeeJ1,FeeJ2,FeeJ3,TaskForm,ReportDate,ReturnDate,FeeStatus,ProjectStatus,Remark")] PveData pveData)
+            [Bind("SerialNum,Producer,VehicleType,OBD,BOB,ReleaseDate,VehicleNum,VIN,TestContent,ProgressJ1,ProgressJ2D,ProgressJ2Z,ProgressJ2W,ProgressJ2H,ProgressJ2S,ProgressJ3,ContactCustomer,ContactMarket,ContactCATAC,Period,ContractType,Agreement,ProjectBid,FeeJ1,FeeJ2,FeeJ3,TaskForm,ReportDate,ReturnDate,FeeStatus,ProjectStatus,Remark")] PveData pveData)
         {
-            if (!ModelState.IsValid) return View(pveData);
+            if (!ModelState.IsValid) 
+                return View(pveData);
+
             _context.Add(pveData);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -214,5 +216,16 @@ namespace PVE.Controllers
         {
             return _context.PveData.Any(e => e.ID == id);
         }
+
+        [AcceptVerbs("GET", "POST")]
+        public IActionResult ValidateVIN(string vin, int id)
+        {
+            if (_context.PveData.Any(e => e.VIN.Equals(vin) && e.ID == id))
+                return Json(true);//编辑状态
+            return _context.PveData.Any(e => e.VIN.Equals(vin)) ? 
+                Json($"VIN {vin} is already in use.") : 
+                Json(true);
+        }
+
     }
 }

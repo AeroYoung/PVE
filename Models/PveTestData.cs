@@ -20,6 +20,7 @@ namespace PVE.Models
 
         [DisplayName("发起日期")]
         [DataType(DataType.Date)]
+        [Required]
         public DateTime BeginDate { get; set; }
 
         [DisplayName("发起人")]

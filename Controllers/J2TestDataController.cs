@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,93 +11,110 @@ using PVE.Models;
 
 namespace PVE.Controllers
 {
-    public class J2TestDataController : Controller
+    public class J2TestDataController : BaseController
     {
-        private readonly PVEContext _context;
-
-        public J2TestDataController(PVEContext context)
+        public J2TestDataController(PVEContext context) : base(context)
         {
-            _context = context;
         }
 
-        // GET: J2TestData
-        public async Task<IActionResult> Index()
+        #region Index & Details
+
+        [AllowAnonymous]
+        public async Task<IActionResult> Index(int? foreignKey)
         {
-            var pVEContext = _context.J2TestData.Include(j => j.PveData);
-            return View(await pVEContext.ToListAsync());
+            if (!GetPveData(foreignKey, out _))
+                return RedirectToAction("Index", "PveDatas");
+
+            var datas = from m in _context.J2TestData
+                select m;
+
+            datas = datas.Where(s => s.PveData.ID.Equals(foreignKey.Value)).OrderBy(s => s.ID)
+                .Include(d => d.PveData);
+
+            return View(await datas.ToListAsync());
         }
 
-        // GET: J2TestData/Details/5
-        public async Task<IActionResult> Details(int? id)
+        [AllowAnonymous]
+        public async Task<IActionResult> Details(int? id, int? foreignKey)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var j2TestData = await _context.J2TestData
-                .Include(j => j.PveData)
+            if (!GetPveData(foreignKey, out _))
+                return RedirectToAction("Index", "PveDatas");
+
+            var signal = await _context.J2TestData
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (j2TestData == null)
+            if (signal == null)
             {
                 return NotFound();
             }
-
-            return View(j2TestData);
+            return View(signal);
         }
 
-        // GET: J2TestData/Create
-        public IActionResult Create()
+        #endregion
+
+        [Authorize(Roles = Constants.AdministratorRole)]
+        public IActionResult Create(int? foreignKey)
         {
-            ViewData["PveDataID"] = new SelectList(_context.PveData, "ID", "SerialNum");
+            if (!GetPveData(foreignKey, out _))
+                return RedirectToAction("Index", "PveDatas");
+
             return View();
         }
 
-        // POST: J2TestData/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = Constants.AdministratorRole)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,PveDataID,GroupName,TestGroup,ActualTestDate,SoftVersion,SABVersion,Remark")] J2TestData j2TestData)
+        public async Task<IActionResult> Create(
+            [Bind("ID,PveDataID,GroupName,TestGroup,ActualTestDate,SoftVersion,SABVersion,Remark")] J2TestData j2TestData,
+            int? foreignKey)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(j2TestData);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["PveDataID"] = new SelectList(_context.PveData, "ID", "SerialNum", j2TestData.PveDataID);
-            return View(j2TestData);
+            if (!ModelState.IsValid)
+                return View(j2TestData);
+
+            if (!GetPveData(foreignKey, out var pveData))
+                return RedirectToAction("Index", "PveDatas");
+
+            j2TestData.PveData = pveData;
+            _context.Add(j2TestData);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index), new { foreignKey = pveData.ID });
         }
 
-        // GET: J2TestData/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        [Authorize(Roles = Constants.AdministratorRole)]
+        public async Task<IActionResult> Edit(int? id, int? foreignKey)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var j2TestData = await _context.J2TestData.FindAsync(id);
-            if (j2TestData == null)
+            if (!GetPveData(foreignKey, out _))
+                return RedirectToAction("Index", "PveDatas");
+
+            var signal = await _context.J2TestData.FindAsync(id);
+            if (signal == null)
             {
                 return NotFound();
             }
-            ViewData["PveDataID"] = new SelectList(_context.PveData, "ID", "SerialNum", j2TestData.PveDataID);
-            return View(j2TestData);
+            return View(signal);
         }
 
-        // POST: J2TestData/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = Constants.AdministratorRole)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,PveDataID,GroupName,TestGroup,ActualTestDate,SoftVersion,SABVersion,Remark")] J2TestData j2TestData)
+        public async Task<IActionResult> Edit(
+            int id, 
+            [Bind("ID,PveDataID,GroupName,TestGroup,ActualTestDate,SoftVersion,SABVersion,Remark")] J2TestData j2TestData,
+            int? foreignKey)
         {
             if (id != j2TestData.ID)
             {
                 return NotFound();
             }
+
+            if (!GetPveData(foreignKey, out _))
+                return RedirectToAction("Index", "PveDatas");
 
             if (ModelState.IsValid)
             {
@@ -116,13 +134,11 @@ namespace PVE.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { foreignKey });
             }
-            ViewData["PveDataID"] = new SelectList(_context.PveData, "ID", "SerialNum", j2TestData.PveDataID);
             return View(j2TestData);
         }
 
-        // GET: J2TestData/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -131,7 +147,6 @@ namespace PVE.Controllers
             }
 
             var j2TestData = await _context.J2TestData
-                .Include(j => j.PveData)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (j2TestData == null)
             {
@@ -141,7 +156,6 @@ namespace PVE.Controllers
             return View(j2TestData);
         }
 
-        // POST: J2TestData/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

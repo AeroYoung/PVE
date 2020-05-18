@@ -19,6 +19,7 @@ namespace PVE.Models
         public PveData PveData { get; set; }
         
         [DisplayName("名称")]
+        [Required]
         public string Name { get; set; }
         
         [DisplayName("编码")]
