@@ -90,12 +90,16 @@ namespace PVE.Controllers
 
         #endregion
 
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, int? foreignKey, string vin)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
+
+            if (foreignKey == null)
+                return RedirectToAction("Index", "PveDatas");
+
+            ViewData[Constants.ViewDataPveDataId] = foreignKey;
+            ViewData[Constants.ViewDataVIN] = vin;
 
             var signal = await _context.Signal.FindAsync(id);
             if (signal == null)
@@ -110,7 +114,9 @@ namespace PVE.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,PinNo,PinName,Func1,Func2,OBD")] Signal signal)
+        public async Task<IActionResult> Edit(int id, 
+            [Bind("PveDataID,ID,PinNo,PinName,Func1,Func2,OBD")] Signal signal
+            , string vin)
         {
             if (id != signal.ID)
             {
@@ -135,7 +141,7 @@ namespace PVE.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { foreignKey = signal.PveDataID, vin });
             }
             return View(signal);
         }

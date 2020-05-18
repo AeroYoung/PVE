@@ -161,22 +161,12 @@
             {
                 <tr>
                     <td>
-                        @if ((await AuthorizationService.AuthorizeAsync(
-                     User, item,
-                     PveDataOperations.Update)).Succeeded)
+                        @if ((await AuthorizationService.AuthorizeAsync(User, item,PveDataOperations.Update)).Succeeded)
                         {
-                            <text> | </text>
                             <a asp-action="Edit" asp-route-id="@item.ID">编辑</a>
-                        }
-
-                        @if ((await AuthorizationService.AuthorizeAsync(
-                     User, item,
-                     PveDataOperations.Delete)).Succeeded)
-                        {
                             <text> | </text>
                             <a asp-action="Delete" asp-route-id="@item.ID">删除</a>
                         }
-
                     </td>
                     <td>
                         <a asp-action="Details" asp-route-id="@item.ID" target="_blank">

@@ -1,18 +1,25 @@
 ﻿@model PVE.Models.Signal
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "编辑";
 }
 
-<h1>Edit</h1>
+<h1>VIN:@ViewData[Constants.ViewDataVIN]</h1>
 
 <h4>Signal</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit"  asp-route-vin="@ViewData[Constants.ViewDataVIN]">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ID" />
+
+            <div class="form-group">
+                <label asp-for="PveDataID"></label>
+                <input asp-for="PveDataID" value="@ViewData[Constants.ViewDataPveDataId]" class="form-control" readonly />
+                <span asp-validation-for="PveDataID" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <label asp-for="PinNo" class="control-label"></label>
                 <input asp-for="PinNo" class="form-control" />
