@@ -1,10 +1,10 @@
-﻿@model IEnumerable<PVE.Models.Signal>
+﻿@model IEnumerable<PVE.Models.ErrorCode>
 
 @{
-    ViewData["Title"] = "输入输出信号";
+    ViewData["Title"] = "演示故障码";
 }
 
-<h1>输入输出信号</h1>
+<h1>演示故障码</h1>
 <div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
 
 <div class="row">
@@ -22,11 +22,8 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Pin编号</th>
                                 <th>名称</th>
-                                <th>功能1</th>
-                                <th>功能2</th>
-                                <th>OBD是否检测</th>
+                                <th>编码</th>
 
                             </tr>
                         </thead>
@@ -36,7 +33,7 @@
                                 <tr>
                                     <td>
                                         @if ((await AuthorizationService.AuthorizeAsync(
-                                           User, item,PveDataOperations.Update)).Succeeded)
+                                          User, item, PveDataOperations.Update)).Succeeded)
                                         {
                                             <a asp-action="Edit" asp-route-id="@item.ID"
                                                asp-route-foreignKey="@ViewData[Constants.ViewDataPveDataId]">
@@ -48,23 +45,15 @@
                                         }
                                     </td>
                                     <td>
-                                        <a asp-action="Details" asp-route-id="@item.ID" 
+                                        <a asp-action="Details" asp-route-id="@item.ID"
                                            asp-route-foreignKey="@ViewData[Constants.ViewDataPveDataId]" target="_blank">
-                                            @Html.DisplayFor(modelItem => item.PinNo)
+                                            @Html.DisplayFor(modelItem => item.Name)
                                         </a>
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.PinName)
+                                        @Html.DisplayFor(modelItem => item.Code)
                                     </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Func1)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Func2)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.OBD)
-                                    </td>
+                                    
                                 </tr>
                             }
                         </tbody>

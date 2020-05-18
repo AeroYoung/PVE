@@ -1,0 +1,64 @@
+﻿@model PVE.Models.J2TestData
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>J2TestData</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="PveDataID" class="control-label"></label>
+                <select asp-for="PveDataID" class="form-control" asp-items="ViewBag.PveDataID"></select>
+                <span asp-validation-for="PveDataID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GroupName" class="control-label"></label>
+                <input asp-for="GroupName" class="form-control" />
+                <span asp-validation-for="GroupName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TestGroup" class="control-label"></label>
+                <input asp-for="TestGroup" class="form-control" />
+                <span asp-validation-for="TestGroup" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActualTestDate" class="control-label"></label>
+                <input asp-for="ActualTestDate" class="form-control" />
+                <span asp-validation-for="ActualTestDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoftVersion" class="control-label"></label>
+                <input asp-for="SoftVersion" class="form-control" />
+                <span asp-validation-for="SoftVersion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SABVersion" class="control-label"></label>
+                <input asp-for="SABVersion" class="form-control" />
+                <span asp-validation-for="SABVersion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Remark" class="control-label"></label>
+                <input asp-for="Remark" class="form-control" />
+                <span asp-validation-for="Remark" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

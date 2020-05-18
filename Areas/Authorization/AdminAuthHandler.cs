@@ -9,12 +9,12 @@ using PVE.Models;
 
 namespace PVE.Areas.Authorization
 {
-    public class AdminAuthHandler : AuthorizationHandler<OperationAuthorizationRequirement, PveData>
+    public class AdminAuthHandler : AuthorizationHandler<OperationAuthorizationRequirement, Object>
     {
         protected override Task HandleRequirementAsync(
             AuthorizationHandlerContext context,
             OperationAuthorizationRequirement requirement,
-            PveData resource)
+            Object resource)
         {
             if (context.User == null)
             {
@@ -31,25 +31,5 @@ namespace PVE.Areas.Authorization
         }
     }
 
-    public class SignalAdminAuthHandler : AuthorizationHandler<OperationAuthorizationRequirement, Signal>
-    {
-        protected override Task HandleRequirementAsync(
-            AuthorizationHandlerContext context,
-            OperationAuthorizationRequirement requirement,
-            Signal resource)
-        {
-            if (context.User == null)
-            {
-                return Task.CompletedTask;
-            }
 
-            // Administrators can do anything.
-            if (context.User.IsInRole(Constants.AdministratorRole))
-            {
-                context.Succeed(requirement);
-            }
-
-            return Task.CompletedTask;
-        }
-    }
 }

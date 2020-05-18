@@ -104,9 +104,6 @@ namespace PVE.Controllers
             return View();
         }
 
-        // POST: PveDatas/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = Constants.AdministratorRole)]
@@ -182,7 +179,6 @@ namespace PVE.Controllers
 
         #region Delete
 
-        // GET: PveDatas/Delete/5
         [Authorize(Roles = Constants.AdministratorRole)]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -201,7 +197,6 @@ namespace PVE.Controllers
             return View(pveData);
         }
 
-        // POST: PveDatas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = Constants.AdministratorRole)]

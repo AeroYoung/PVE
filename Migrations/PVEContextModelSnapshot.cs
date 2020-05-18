@@ -19,6 +19,65 @@ namespace PVE.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("PVE.Models.ErrorCode", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PveDataID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("PveDataID");
+
+                    b.ToTable("ErrorCode");
+                });
+
+            modelBuilder.Entity("PVE.Models.J2TestData", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("ActualTestDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("GroupName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PveDataID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remark")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SABVersion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SoftVersion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TestGroup")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("PveDataID");
+
+                    b.ToTable("J2TestData");
+                });
+
             modelBuilder.Entity("PVE.Models.PveData", b =>
                 {
                     b.Property<int>("ID")
@@ -132,6 +191,62 @@ namespace PVE.Migrations
                     b.ToTable("PveData");
                 });
 
+            modelBuilder.Entity("PVE.Models.PveTestData", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("BeginCompany")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("BeginDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("BeginMan")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ChargeCompany")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ChargeMan")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FeedPercent")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("L19011")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Priors")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Problem")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PveDataID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remark")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("PveDataID");
+
+                    b.ToTable("PveTestData");
+                });
+
             modelBuilder.Entity("PVE.Models.Signal", b =>
                 {
                     b.Property<int>("ID")
@@ -163,6 +278,33 @@ namespace PVE.Migrations
                     b.HasIndex("PveDataID");
 
                     b.ToTable("Signal");
+                });
+
+            modelBuilder.Entity("PVE.Models.ErrorCode", b =>
+                {
+                    b.HasOne("PVE.Models.PveData", "PveData")
+                        .WithMany("ErrorCodes")
+                        .HasForeignKey("PveDataID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PVE.Models.J2TestData", b =>
+                {
+                    b.HasOne("PVE.Models.PveData", "PveData")
+                        .WithMany("J2TestDatas")
+                        .HasForeignKey("PveDataID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PVE.Models.PveTestData", b =>
+                {
+                    b.HasOne("PVE.Models.PveData", "PveData")
+                        .WithMany("PveTestDatas")
+                        .HasForeignKey("PveDataID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PVE.Models.Signal", b =>

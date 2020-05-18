@@ -176,9 +176,13 @@
                     <td>@Html.DisplayFor(modelItem => item.Producer)</td>
                     <td>
                         <a asp-controller="Signals" asp-action="Index" target="_blank"
-                           asp-route-foreignKey="@item.ID" 
-                           asp-route-vin="@item.VIN">
+                           asp-route-foreignKey="@item.ID">
                             信号
+                        </a>
+                        <text>|</text>
+                        <a asp-controller="ErrorCodes" asp-action="Index" target="_blank"
+                           asp-route-foreignKey="@item.ID">
+                            故障码
                         </a>
                     </td>
                     <td>

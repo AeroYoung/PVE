@@ -176,5 +176,11 @@ namespace PVE.Models
         #endregion
 
         public List<Signal> Signals { get; set; }
+
+        public List<ErrorCode> ErrorCodes { get; set; }
+
+        public List<J2TestData> J2TestDatas { get; set; }
+
+        public List<PveTestData> PveTestDatas { get; set; }
     }
 }

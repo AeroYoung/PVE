@@ -1,0 +1,31 @@
+﻿@model PVE.Models.ErrorCode
+
+@{
+    ViewData["Title"] = "详情";
+}
+
+<h1>VIN:@ViewData[Constants.ViewDataVIN]</h1>
+
+<div>
+    <h4>演示故障码</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Code)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Code)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ID"
+       asp-route-foreignKey="@ViewData[Constants.ViewDataPveDataId]">编辑</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

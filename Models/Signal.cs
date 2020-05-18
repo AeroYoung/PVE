@@ -9,12 +9,12 @@ namespace PVE.Models
         [Key]
         public int ID { get; set; }
 
-        [DisplayName("总表关联主键")]
+        [DisplayName("总表主键")]
         public int PveDataID { get; set; }
 
         [DisplayName("车型")]
         public PveData PveData { get; set; }
-        
+
         [DisplayName("Pin编号")]
         [Required]
         public string PinNo { get; set; }
