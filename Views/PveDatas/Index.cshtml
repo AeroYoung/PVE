@@ -180,10 +180,14 @@
                         <text>|</text>
                         <a asp-controller="ErrorCodes" asp-action="Index" target="_blank"
                            asp-route-foreignKey="@item.ID">
-                            故障码</a>
+                            故障码
+                        </a>
                         <text>|</text>
                         <a asp-controller="J2TestData" asp-action="Index" target="_blank"
                            asp-route-foreignKey="@item.ID">J2测试</a>
+                        <text>|</text>
+                        <a asp-controller="PveTestDatas" asp-action="Index" target="_blank"
+                           asp-route-foreignKey="@item.ID">PVE测试</a>
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.VehicleType)

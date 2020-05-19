@@ -1,0 +1,117 @@
+﻿@model PVE.Models.PveTestData
+
+@{
+    ViewData["Title"] = "新增";
+}
+
+<h1>新增</h1>
+
+<h4>输入输出信号</h4>
+<h4>@ViewData[Constants.ViewDataVIN]</h4>
+<hr />
+
+<form asp-action="Create" asp-route-foreignKey="@ViewData[Constants.ViewDataPveDataId]">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label asp-for="PveData.ID">总表主键</label>
+            <input asp-for="PveData.ID" value="@ViewData[Constants.ViewDataPveDataId]" class="form-control" readonly />
+            <span asp-validation-for="PveData.ID" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="BeginDate" class="control-label"></label>
+            <input asp-for="BeginDate" class="form-control" />
+            <span asp-validation-for="BeginDate" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="BeginMan" class="control-label"></label>
+            <input asp-for="BeginMan" class="form-control" />
+            <span asp-validation-for="BeginMan" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label asp-for="BeginCompany" class="control-label"></label>
+            <input asp-for="BeginCompany" class="form-control" />
+            <span asp-validation-for="BeginCompany" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="Type" class="control-label"></label>
+            <input asp-for="Type" class="form-control" />
+            <span asp-validation-for="Type" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="Problem" class="control-label"></label>
+            <input asp-for="Problem" class="form-control" />
+            <span asp-validation-for="Problem" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label asp-for="Priors" class="control-label"></label>
+            <input asp-for="Priors" class="form-control" />
+            <span asp-validation-for="Priors" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="ChargeMan" class="control-label"></label>
+            <input asp-for="ChargeMan" class="form-control" />
+            <span asp-validation-for="ChargeMan" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="ChargeCompany" class="control-label"></label>
+            <input asp-for="ChargeCompany" class="form-control" />
+            <span asp-validation-for="ChargeCompany" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label asp-for="EndDate" class="control-label"></label>
+            <input asp-for="EndDate" class="form-control" />
+            <span asp-validation-for="EndDate" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="State" class="control-label"></label>
+            <input asp-for="State" class="form-control" />
+            <span asp-validation-for="State" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="FeedPercent" class="control-label"></label>
+            <input asp-for="FeedPercent" class="form-control" />
+            <span asp-validation-for="FeedPercent" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label asp-for="Remark" class="control-label"></label>
+            <input asp-for="Remark" class="form-control" />
+            <span asp-validation-for="Remark" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="L19011" class="control-label"></label>
+            <input asp-for="L19011" class="form-control" />
+            <span asp-validation-for="L19011" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <div class="form-group">
+                <input type="submit" value="确认" class="btn btn-primary" />
+            </div>
+        </div>
+        <div class="form-group col-md-4">
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -19,5 +19,7 @@ namespace PVE
         public static readonly string ViewDataPveDataId = "PveDataId";
         public static readonly string ViewDataVIN = "VIN";
         public static readonly string ViewDataSignalId = "SignalId";
+
+        public static readonly string ViewDataReturnUrl = "returnUrl";
     }
 }

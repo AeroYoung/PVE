@@ -108,7 +108,7 @@ namespace PVE
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=PveDatas}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

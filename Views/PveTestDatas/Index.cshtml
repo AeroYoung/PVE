@@ -1,0 +1,145 @@
+﻿@model IEnumerable<PVE.Models.PveTestData>
+
+@{
+    ViewData["Title"] = "PVE测试清单";
+}
+
+<h1>PVE测试清单</h1>
+<div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">VIN:{@ViewData[Constants.ViewDataVIN]}</div>
+            <div class="card-body">
+                <p>
+                    <a asp-action="Create" asp-route-foreignKey="@ViewData[Constants.ViewDataPveDataId]"
+                       class="btn btn-warning">新增</a>
+                </p>
+
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped text-nowrap">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.BeginDate)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.BeginMan)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.BeginCompany)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Type)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Problem)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Priors)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ChargeMan)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ChargeCompany)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.EndDate)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.State)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.FeedPercent)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Remark)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.L19011)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        
+                                        @if ((await AuthorizationService.AuthorizeAsync(
+                                          User, item, PveDataOperations.Update)).Succeeded)
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@item.ID"
+                                               asp-route-foreignKey="@ViewData[Constants.ViewDataPveDataId]">
+                                                编辑
+                                            </a>
+                                            <text> | </text>
+                                            <a asp-action="Delete" asp-route-id="@item.ID"
+                                               asp-route-foreignKey="@ViewData[Constants.ViewDataPveDataId]">删除</a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="Details" asp-route-id="@item.ID"
+                                               asp-route-foreignKey="@ViewData[Constants.ViewDataPveDataId]" 
+                                               target="_blank">
+                                                详情
+                                            </a>
+                                        }
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.BeginDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.BeginMan)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.BeginCompany)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Type)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Problem)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Priors)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ChargeMan)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ChargeCompany)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.EndDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.State)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FeedPercent)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Remark)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.L19011)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

@@ -19,7 +19,7 @@ namespace PVE.Controllers
 
         #region Index
 
-        [AllowAnonymous]
+        [Authorize]
         public async Task<IActionResult> Index(
             string sortOrder,
             string currentFilter, 
@@ -78,7 +78,7 @@ namespace PVE.Controllers
 
         #endregion
 
-        // GET: PveDatas/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

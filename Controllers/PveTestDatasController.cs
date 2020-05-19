@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +11,9 @@ using PVE.Models;
 
 namespace PVE.Controllers
 {
-    public class SignalsController : BaseController
+    public class PveTestDatasController : BaseController
     {
-        public SignalsController(PVEContext context) : base(context)
+        public PveTestDatasController(PVEContext context) : base(context)
         {
         }
 
@@ -23,7 +25,7 @@ namespace PVE.Controllers
             if (!GetPveData(foreignKey, out _))
                 return RedirectToAction("Index", "PveDatas");
 
-            var datas = from m in _context.Signal
+            var datas = from m in _context.PveTestData
                 select m;
 
             datas = datas.Where(s => s.PveData.ID.Equals(foreignKey.Value)).OrderBy(s => s.ID)
@@ -41,7 +43,7 @@ namespace PVE.Controllers
             if (!GetPveData(foreignKey, out _))
                 return RedirectToAction("Index", "PveDatas");
 
-            var signal = await _context.Signal
+            var signal = await _context.PveTestData
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (signal == null)
             {
@@ -51,8 +53,6 @@ namespace PVE.Controllers
         }
 
         #endregion
-
-        #region Create
 
         [Authorize(Roles = Constants.AdministratorRole)]
         public IActionResult Create(int? foreignKey)
@@ -67,24 +67,20 @@ namespace PVE.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("PinNo,PinName,Func1,Func2,OBD")] Signal signal, int? foreignKey)
+            [Bind("ID,PveDataID,BeginDate,BeginMan,BeginCompany,Type,Problem,Priors,ChargeMan,ChargeCompany,EndDate,State,FeedPercent,Remark,L19011")] PveTestData pveTestData, int? foreignKey)
         {
             if (!ModelState.IsValid)
-                return View(signal);
+                return View(pveTestData);
 
             if (!GetPveData(foreignKey, out var pveData))
                 return RedirectToAction("Index", "PveDatas");
 
-            signal.PveData = pveData;
-            _context.Add(signal);
+            pveTestData.PveData = pveData;
+            _context.Add(pveTestData);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index), new {foreignKey = pveData.ID });
+            return RedirectToAction(nameof(Index), new { foreignKey = pveData.ID });
         }
-
-        #endregion
-
-        #region Edit
 
         [Authorize(Roles = Constants.AdministratorRole)]
         public async Task<IActionResult> Edit(int? id, int? foreignKey)
@@ -95,7 +91,7 @@ namespace PVE.Controllers
             if (!GetPveData(foreignKey, out _))
                 return RedirectToAction("Index", "PveDatas");
 
-            var signal = await _context.Signal.FindAsync(id);
+            var signal = await _context.PveTestData.FindAsync(id);
             if (signal == null)
             {
                 return NotFound();
@@ -106,10 +102,9 @@ namespace PVE.Controllers
         [Authorize(Roles = Constants.AdministratorRole)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,PinNo,PinName,Func1,Func2,OBD")] Signal signal, 
-            int? foreignKey)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,PveDataID,BeginDate,BeginMan,BeginCompany,Type,Problem,Priors,ChargeMan,ChargeCompany,EndDate,State,FeedPercent,Remark,L19011")] PveTestData pveTestData, int? foreignKey)
         {
-            if (id != signal.ID)
+            if (id != pveTestData.ID)
             {
                 return NotFound();
             }
@@ -121,12 +116,12 @@ namespace PVE.Controllers
             {
                 try
                 {
-                    _context.Update(signal);
+                    _context.Update(pveTestData);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SignalExists(signal.ID))
+                    if (!PveTestDataExists(pveTestData.ID))
                     {
                         return NotFound();
                     }
@@ -135,14 +130,10 @@ namespace PVE.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index), new { foreignKey});
+                return RedirectToAction(nameof(Index), new { foreignKey });
             }
-            return View(signal);
+            return View(pveTestData);
         }
-
-        #endregion
-
-        #region Delete
 
         [Authorize(Roles = Constants.AdministratorRole)]
         public async Task<IActionResult> Delete(int? id)
@@ -152,31 +143,31 @@ namespace PVE.Controllers
                 return NotFound();
             }
 
-            var signal = await _context.Signal
+            var pveTestData = await _context.PveTestData
+                .Include(p => p.PveData)
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (signal == null)
+            if (pveTestData == null)
             {
                 return NotFound();
             }
 
-            return View(signal);
+            return View(pveTestData);
         }
 
+        // POST: PveTestDatas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var signal = await _context.Signal.FindAsync(id);
-            _context.Signal.Remove(signal);
+            var pveTestData = await _context.PveTestData.FindAsync(id);
+            _context.PveTestData.Remove(pveTestData);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SignalExists(int id)
+        private bool PveTestDataExists(int id)
         {
-            return _context.Signal.Any(e => e.ID == id);
+            return _context.PveTestData.Any(e => e.ID == id);
         }
-
-        #endregion
     }
 }
