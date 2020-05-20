@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -8,10 +9,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using PVE.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using PVE.Areas.Authorization;
 
@@ -42,8 +45,7 @@ namespace PVE
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-
-            #region 
+            #region 身份认证
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -80,6 +82,9 @@ namespace PVE
             #endregion
 
             services.AddSingleton<IAuthorizationHandler, AdminAuthHandler>();
+
+            // 目录浏览
+            //services.AddDirectoryBrowser();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -111,6 +116,23 @@ namespace PVE
                     pattern: "{controller=PveDatas}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
+            // 目录浏览
+            //app.UseDirectoryBrowser(new DirectoryBrowserOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(
+            //        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "files")),
+            //    RequestPath = "/Files"
+            //});
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    //ServeUnknownFileTypes = true 
+            //    ContentTypeProvider = new FileExtensionContentTypeProvider(new Dictionary<string, string>
+            //    {
+            //        { ".docx","word"},
+            //        { ".nupkg","application/zip"}
+            //    })
+            //});
         }
     }
 }

@@ -1,8 +1,14 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using PVE.Data;
 using PVE.Models;
 
@@ -12,9 +18,12 @@ namespace PVE.Controllers
     {
         private readonly PVEContext _context;
 
-        public PveDatasController(PVEContext context)
+        private readonly IWebHostEnvironment _hostingEnvironment;
+
+        public PveDatasController(PVEContext context, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         #region Index
@@ -76,8 +85,6 @@ namespace PVE.Controllers
             return View(await PaginatedList<PveData>.CreateAsync(datas, pageNumber, pageSize));
         }
 
-        #endregion
-
         [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
@@ -93,8 +100,20 @@ namespace PVE.Controllers
                 return NotFound();
             }
 
+            var folder = GetFolder(pveData.VIN);
+            if (Directory.Exists(folder))
+            {
+                var files = Directory.GetFiles(folder);
+                if (files.Length != 0)
+                {
+                    ViewBag.Files = files.Select(Path.GetFileName);
+                }
+            }
+
             return View(pveData);
         }
+
+        #endregion
 
         #region Create
 
@@ -212,6 +231,85 @@ namespace PVE.Controllers
 
         #endregion
 
+        #region Excel & File
+
+        public IActionResult GetExcel()
+        {
+            var type = typeof(PveData);
+
+            using (var package = new ExcelPackage())
+            {
+                var worksheet = package.Workbook.Worksheets.Add("Test");
+                
+                var excelData = package.GetAsByteArray();
+                const string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                var fileName = $"PVE-所有数据-{DateTime.Now:yyyyMMdd}.xlsx";
+                return File(excelData, contentType, fileName);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ImportExcel()
+        {
+            return View("Index");
+        }
+
+        private string GetFolder(string vin)
+        {
+            foreach (var rInvalidChar in Path.GetInvalidFileNameChars())
+                vin = vin.Replace(rInvalidChar.ToString(), string.Empty);
+
+            var webRootPath = _hostingEnvironment.WebRootPath;
+            var folder = $"{webRootPath}\\Files\\{vin}\\PVEDATAS\\";
+            return folder;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FileUpload(int id, string vin)
+        {
+            var files = Request.Form.Files;
+            
+            foreach (var formFile in files)
+            {
+                if (formFile.Length <= 0)
+                    continue;
+
+                var folder = GetFolder(vin);
+                
+                if (!Directory.Exists(folder))
+                    Directory.CreateDirectory(folder);
+
+                var filePath = $"{folder}{formFile.FileName}";
+                await using (var stream = new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite,
+                    FileShare.ReadWrite))
+                {
+                    await formFile.CopyToAsync(stream);
+                }
+            }
+
+            return RedirectToAction(nameof(Details), new {id});
+        }
+
+        public IActionResult FileDownload(string vin, string fileName)
+        {
+            var folder = GetFolder(vin);
+            var filePath = $"{folder}{fileName}";
+
+            if (!System.IO.File.Exists(filePath))
+                return NotFound();
+
+            var stream = System.IO.File.OpenRead(filePath);
+            var fileExt = Path.GetExtension(fileName);
+            //获取文件的ContentType
+            var provider = new FileExtensionContentTypeProvider();
+            var meme = provider.Mappings[fileExt];
+            return File(stream, meme, Path.GetFileName(filePath));
+        }
+
+        #endregion
+
+        #region Other
+
         private bool PveDataExists(int id)
         {
             return _context.PveData.Any(e => e.ID == id);
@@ -227,5 +325,6 @@ namespace PVE.Controllers
                 Json(true);
         }
 
+        #endregion
     }
 }
