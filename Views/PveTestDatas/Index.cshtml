@@ -74,18 +74,19 @@
                                         {
                                             <a asp-action="Edit" asp-route-id="@item.ID"
                                                asp-route-foreignKey="@ViewData[Constants.ViewDataPveDataId]">
-                                                编辑
+                                                <i class="fas fa-edit"></i>
                                             </a>
-                                            <text> | </text>
                                             <a asp-action="Delete" asp-route-id="@item.ID"
-                                               asp-route-foreignKey="@ViewData[Constants.ViewDataPveDataId]">删除</a>
+                                               asp-route-foreignKey="@ViewData[Constants.ViewDataPveDataId]">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
                                         }
                                         else
                                         {
                                             <a asp-action="Details" asp-route-id="@item.ID"
                                                asp-route-foreignKey="@ViewData[Constants.ViewDataPveDataId]" 
                                                target="_blank">
-                                                详情
+                                                <i class="fas fa-eye"></i>
                                             </a>
                                         }
                                     </td>

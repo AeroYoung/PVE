@@ -19,6 +19,10 @@ namespace PVE.Data
             builder.Entity<PveData>()
                 .HasIndex(u => u.VIN)
                 .IsUnique();
+
+            builder.Entity<Equipment>()
+                .HasIndex(u => u.Code)
+                .IsUnique();
         }
 
         public DbSet<PveData> PveData { get; set; }
@@ -30,6 +34,10 @@ namespace PVE.Data
         public DbSet<J2TestData> J2TestData { get; set; }
 
         public DbSet<PveTestData> PveTestData { get; set; }
+
+        public DbSet<Equipment> Equipment { get; set; }
+
+        public DbSet<Fault> Fault { get; set; }
 
     }
 }

@@ -28,6 +28,21 @@ namespace PVE.Controllers
             return true;
         }
 
+        protected bool GetEquipment(int? foreignKey, out Equipment euiEquipment)
+        {
+            euiEquipment = null;
+            if (foreignKey == null)
+                return false;
+
+            euiEquipment = _context.Equipment.SingleOrDefault(p => p.ID.Equals(foreignKey.Value));
+
+            if (euiEquipment == null)
+                return false;
+
+            ViewData[Constants.ViewDataEquipmentId] = foreignKey;
+            return true;
+        }
+
         public BaseController(PVEContext context)
         {
             _context = context;

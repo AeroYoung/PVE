@@ -19,6 +19,31 @@ namespace PVE.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("PVE.Models.Equipment", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Remark")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("Equipment");
+                });
+
             modelBuilder.Entity("PVE.Models.ErrorCode", b =>
                 {
                     b.Property<int>("ID")
@@ -42,6 +67,40 @@ namespace PVE.Migrations
                     b.HasIndex("PveDataID");
 
                     b.ToTable("ErrorCode");
+                });
+
+            modelBuilder.Entity("PVE.Models.Fault", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("BeginTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Describe")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EquipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PveDataID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("EquipmentId");
+
+                    b.HasIndex("PveDataID");
+
+                    b.ToTable("Fault");
                 });
 
             modelBuilder.Entity("PVE.Models.J2TestData", b =>
@@ -286,6 +345,21 @@ namespace PVE.Migrations
                 {
                     b.HasOne("PVE.Models.PveData", "PveData")
                         .WithMany("ErrorCodes")
+                        .HasForeignKey("PveDataID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PVE.Models.Fault", b =>
+                {
+                    b.HasOne("PVE.Models.Equipment", "Equipment")
+                        .WithMany()
+                        .HasForeignKey("EquipmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PVE.Models.PveData", "PveData")
+                        .WithMany("Faults")
                         .HasForeignKey("PveDataID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

@@ -1,0 +1,111 @@
+﻿@model IEnumerable<PVE.Models.Fault>
+
+@{
+    ViewData["Title"] = "故障流程";
+}
+
+<h1>故障流程</h1>
+<div class="clearfix" style="margin-bottom: 10px;"></div><!-- 清除浮动 -->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">VIN:{@ViewData[Constants.ViewDataVIN]}</div>
+            <div class="card-body">
+                <p>
+                    <a asp-action="Create" class="btn btn-warning"
+                       asp-route-foreignKey="@ViewData[Constants.ViewDataPveDataId]"
+                       asp-route-equipmentId="@ViewData[Constants.ViewDataEquipmentId]">新增</a>
+                </p>
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Code)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Describe)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.BeginTime)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.EndTime)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.TimeSpan)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PveData)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Equipment)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @if ((await AuthorizationService.AuthorizeAsync(
+                                       User, item, PveDataOperations.Update)).Succeeded)
+                                    {
+                                        <a asp-action="Edit" asp-route-id="@item.ID"
+                                           asp-route-foreignKey="@item.PveDataID"
+                                           asp-route-equipmentId="@item.EquipmentId">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.ID"
+                                           asp-route-foreignKey="@item.PveDataID"
+                                           asp-route-equipmentId="@item.EquipmentId">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.ID"
+                                       asp-route-foreignKey="@item.PveDataID"
+                                       asp-route-equipmentId="@item.EquipmentId"
+                                       target="_blank">
+                                        @Html.DisplayFor(modelItem => item.Code)
+                                    </a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Describe)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BeginTime)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EndTime)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TimeSpan)
+                                </td>
+                                <td>
+                                    <a asp-controller="PveDatas" asp-action="Index"
+                                       asp-route-id="@Html.DisplayFor(modelItem => item.PveDataID)">
+                                        @Html.DisplayFor(modelItem => item.PveData.VIN)
+                                    </a>
+                                </td>
+                                <td>
+                                    <a asp-controller="Equipments" asp-action="Index"
+                                       asp-route-id="@Html.DisplayFor(modelItem => item.EquipmentId)">
+                                        @Html.DisplayFor(modelItem => item.Equipment.Describe)
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

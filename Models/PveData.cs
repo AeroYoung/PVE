@@ -177,6 +177,8 @@ namespace PVE.Models
 
         #endregion
 
+        public List<Fault> Faults { get; set; }
+
         public List<Signal> Signals { get; set; }
 
         public List<ErrorCode> ErrorCodes { get; set; }

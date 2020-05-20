@@ -6,10 +6,6 @@
 
 <h1>新增数据</h1>
 
-<p>
-    <a asp-action="Index">Back to List</a>
-</p>
-
 <form asp-action="Create">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -273,9 +269,12 @@
             </div>
         </div>
     </div>
-    
+    <p></p>
     <div class="form-group">
         <input type="submit" value="确认" class="btn btn-danger btn-lg" />
+        <p>
+            <a asp-action="Index">Back to List</a>
+        </p>
     </div>
 
 </form>
