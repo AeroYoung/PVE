@@ -166,3 +166,4 @@ $RECYCLE.BIN/
 .vs/
 *.nupkg
 Migrations/
+wwwroot/files
